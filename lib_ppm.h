@@ -19,5 +19,3 @@ int write_ppm(char *file, struct image_s *image);
 int new_ppm(struct image_s *image, int width, int height);
 int free_ppm(struct image_s *image);
 int determine_color_level(struct pixel_s *pixel);
-int enhance_ppm(struct pixel_s *pixel, int level_r, int level_g, int level_b);
-
