@@ -46,8 +46,6 @@ int main()
 				struct pixel_s *pix_value = &image->pix[j * image->width + i];
 				struct pixel_s sub_pixels[9]; // matriz de pixels de saída
 
-				//int color_level = (pix_value->r + pix_value->g + pix_value->b) / 3;
-
 				int color_level_r = determine_color_level(pix_value->r);
 				int color_level_g = determine_color_level(pix_value->g);
 				int color_level_b = determine_color_level(pix_value->b);
