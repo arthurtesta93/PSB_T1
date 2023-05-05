@@ -44,66 +44,139 @@ int main()
 			{
 
 				struct pixel_s *pix_value = &image->pix[j * image->width + i];
-				struct pixel_s sub_pixels[9]; //matriz de pixels de saída
+				struct pixel_s sub_pixels[9]; // matriz de pixels de saída
 
-				int color_level = (pix_value->r + pix_value->g + pix_value->b) / 3;
+				//int color_level = (pix_value->r + pix_value->g + pix_value->b) / 3;
 
-				if (color_level <= 74)
+				int color_level_r = determine_color_level(pix_value->r);
+				int color_level_g = determine_color_level(pix_value->g);
+				int color_level_b = determine_color_level(pix_value->b);
+				//printf("%d %d %d\n", color_level_r, color_level_g, color_level_b);
+
+				if (color_level_r == 1)
 				{
-					for (int i = 0; i < 9; i++)
+					sub_pixels[0] = (struct pixel_s){0, 0, 0}; // todos pixels desligados
+					sub_pixels[3] = (struct pixel_s){0, 0, 0};
+					sub_pixels[6] = (struct pixel_s){0, 0, 0};
+				}
+				else if (color_level_r == 2)
+				{
+					sub_pixels[0] = (struct pixel_s){0, 0, 0};
+					sub_pixels[3].r = pix_value->r;
+					sub_pixels[3].g = pix_value->r;
+					sub_pixels[3].b = pix_value->r;
+					sub_pixels[6] = (struct pixel_s){0, 0, 0};
+				}
+				else if (color_level_r == 3) // pixel do meio desligado, demais ligados
+				{
+					sub_pixels[6] = *pix_value;
+					sub_pixels[6] = *pix_value;
+					sub_pixels[6] = *pix_value;
+
+					sub_pixels[3] = (struct pixel_s){0, 0, 0};
+
+					sub_pixels[0] = *pix_value;
+					sub_pixels[0] = *pix_value;
+					sub_pixels[0] = *pix_value;
+				}
+				else if (color_level_r == 4)
+				{
+					sub_pixels[0] = *pix_value;
+					sub_pixels[0] = *pix_value;
+					sub_pixels[0] = *pix_value;
+					sub_pixels[3] = *pix_value;
+					sub_pixels[3] = *pix_value;
+					sub_pixels[3] = *pix_value;
+					sub_pixels[6] = *pix_value;
+					sub_pixels[6] = *pix_value;
+					sub_pixels[6] = *pix_value;
+				}
+				if (color_level_g == 1)
+				{
+					sub_pixels[1] = (struct pixel_s){0, 0, 0}; // todos pixels desligados
+					sub_pixels[4] = (struct pixel_s){0, 0, 0};
+					sub_pixels[7] = (struct pixel_s){0, 0, 0};
+				}
+				else if (color_level_g == 2)
+				{
+					sub_pixels[1] = (struct pixel_s){0, 0, 0};
+					sub_pixels[4] = *pix_value;
+					sub_pixels[4] = *pix_value;
+					sub_pixels[4] = *pix_value;
+					sub_pixels[7] = (struct pixel_s){0, 0, 0};
+				}
+				else if (color_level_g == 3) // pixel do meio desligado, demais ligados
+				{
+					sub_pixels[1] = *pix_value;
+					sub_pixels[1] = *pix_value;
+					sub_pixels[1] = *pix_value;
+
+					sub_pixels[4] = (struct pixel_s){0, 0, 0};
+
+					sub_pixels[7] = *pix_value;
+					sub_pixels[7] = *pix_value;
+					sub_pixels[7] = *pix_value;
+				}
+				else if (color_level_g == 4)
+				{
+					sub_pixels[1] = *pix_value;
+					sub_pixels[1] = *pix_value;
+					sub_pixels[1] = *pix_value;
+					sub_pixels[4] = *pix_value;
+					sub_pixels[4] = *pix_value;
+					sub_pixels[4] = *pix_value;
+					sub_pixels[7] = *pix_value;
+					sub_pixels[7] = *pix_value;
+					sub_pixels[7] = *pix_value;
+				}
+				if (color_level_b == 1)
+				{
+					sub_pixels[2] = (struct pixel_s){0, 0, 0}; // todos pixels desligados
+					sub_pixels[5] = (struct pixel_s){0, 0, 0};
+					sub_pixels[8] = (struct pixel_s){0, 0, 0}; 
+				}
+				else if (color_level_b == 2)
+				{
+					sub_pixels[2] = (struct pixel_s){0, 0, 0};
+					sub_pixels[5] = *pix_value;
+					sub_pixels[5] = *pix_value;
+					sub_pixels[5] = *pix_value;
+					sub_pixels[8] = (struct pixel_s){0, 0, 0};
+				}
+				else if (color_level_b == 3) // pixel do meio desligado, demais ligados
+				{
+					sub_pixels[2] = *pix_value;
+					sub_pixels[2] = *pix_value;
+					sub_pixels[2] = *pix_value;
+
+					sub_pixels[5] = (struct pixel_s){0, 0, 0};
+
+					sub_pixels[8] = *pix_value;
+					sub_pixels[8] = *pix_value;
+					sub_pixels[8] = *pix_value;
+				}
+				else if (color_level_b == 4)
+				{
+					sub_pixels[2] = *pix_value;
+					sub_pixels[2] = *pix_value;
+					sub_pixels[2] = *pix_value;
+					sub_pixels[5] = *pix_value;
+					sub_pixels[5] = *pix_value;
+					sub_pixels[5] = *pix_value;
+					sub_pixels[8] = *pix_value;
+					sub_pixels[8] = *pix_value;
+					sub_pixels[8] = *pix_value;
+				}
+				for (int y = 0; y < 3; y++)
+				{
+					for (int x = 0; x < 3; x++)
 					{
-						sub_pixels[i] = (struct pixel_s){0, 0, 0}; // todos pixels desligados
+
+						int new_x = i * 3 + x;
+						int new_y = j * 3 + y;
+						zoom_image->pix[new_y * zoom_image->width + new_x] = *sub_pixels;
 					}
 				}
-				else if (color_level <= 134)
-				{
-					for (int i = 0; i < 9; i++)
-					{
-						if (i == 4) // pixel do meio ligado, demais desligados
-						{
-							sub_pixels[i].r = pix_value->r;
-							sub_pixels[i].g = pix_value->g;
-							sub_pixels[i].b = pix_value->b;
-						}
-						else
-						{
-							sub_pixels[i] = (struct pixel_s){0, 0, 0};
-						}
-					}
-				}
-				else if (color_level <= 179) //pixel do meio desligado, demais ligados
-				{
-					for (int i = 0; i < 9; i++)
-					{
-						if (i == 4)
-						{
-							sub_pixels[i] = (struct pixel_s){0, 0, 0};
-						}
-						else
-						{
-							sub_pixels[i].r = pix_value->r;
-							sub_pixels[i].g = pix_value->g;
-							sub_pixels[i].b = pix_value->b;
-						}
-					}
-				}
-				else // mantém cores originais
-				{
-					for (int i = 0; i < 9; i++)
-					{
-						sub_pixels[i] = *pix_value;
-					}
-				} 
-					for (int y = 0; y < 3; y++)
-					{
-						for (int x = 0; x < 3; x++)
-						{
-
-							int new_x = i * 3 + x;
-							int new_y = j * 3 + y;
-							zoom_image->pix[new_y * zoom_image->width + new_x] = *sub_pixels;
-						}
-					}
 			}
 		}
 
